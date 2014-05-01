@@ -39,15 +39,15 @@ package states
 		private var doodleMovie:classes.Doodle;
 		private var touchesObj:Object = new Object();
 		
-		public static const xVelocityMax:int 		= 5;
-		public static const yVelocityMax:int 		= 21;
+		public static const xVelocityMax:int 		= 4;
+		public static const yVelocityMax:int 		= 22;
 		public static const yVelocityMax_2:int 		= 50;
 		public static const GRAVITY:Number 			= 0.7;
 		public static const INERTIA:Number 			= 0.7;
 		public static const Score_w:int 			= 200;
 		public static const Score_h:int 			= 75;
 		public static const score2SpawnBigOnes:int 	= 90000;
-		//public static const oneSecond:int 			= 1000;
+		public static const plateformInterval:int 	= 250;
 		public static const oneSecond:int 			= 1000;
 		
 		private var inputTimer:Number;
@@ -198,6 +198,11 @@ package states
 			if (jetpack_jump)
 			{
 				yVelocity = -yVelocityMax_2;
+				
+				if (!doodleMovie.isPlaying)
+				{
+					launchPlayAnim();
+				}
 			}
 			
 			if (doodleMovie.y <= midStageY && yVelocity < 0)
@@ -210,46 +215,42 @@ package states
 			}
 			else
 			{
-				for (i = 0; i < 2; i++) //incase break through
+				if (yVelocity > 0) // en chute == peut collisionner
 				{
-					if (yVelocity > 0) // en chute == peut collisionner
+					var doodle_box:Rectangle = doodleMovie.getBounds(this);
+					
+					for each (stick in stageStickArr)
 					{
-						var doodle_box:Rectangle = doodleMovie.getBounds(this);
-						
-						for each (stick in stageStickArr)
+						var stick_box:Rectangle = stick.getBounds(this);
+					
+						if (doodle_box.intersects(stick_box) && lastFeetPosY < stick.y - stick.pivotY) // collision
 						{
-							var stick_box:Rectangle = stick.getBounds(this);
-						
-							if ((doodle_box.intersects(stick_box) && lastFeetPosY < stick.y - stick.pivotY)// collision
-								|| (doodleMovie.y > stage.stageHeight - doodleMovie.pivotY) // en bas
-									&& (I_AM_GOD || !score))
+							if (stick is BrokenStick)
+									BrokenStick(stick).drop();
+							else
 							{
-								if (stick is BrokenStick)
-										BrokenStick(stick).drop();
-								else
-								{
-									yVelocity = big_jump ? -yVelocityMax_2 : -yVelocityMax;
-									if (stick is GlassStick)
-										stick.y = stage.stageHeight + 200;
-								}
-							}
-							else if (doodleMovie.y > stage.stageHeight + doodleMovie.pivotY) // death
-							{
-								//trace ("t'es mort !");
-								gameOver();
+								yVelocity = big_jump ? -yVelocityMax_2 : -yVelocityMax;
+								if (stick is GlassStick)
+									stick.y = stage.stageHeight * 1.1; // destruction
 							}
 						}
+						else if (doodleMovie.y > stage.stageHeight + doodleMovie.pivotY) // en bas
+						{
+							if (I_AM_GOD || !score)
+								yVelocity = big_jump ? -yVelocityMax_2 : -yVelocityMax;
+							else  // death
+								gameOver();
+						}
 					}
-					else
-					{
-						lastFeetPosY = doodleMovie.y + doodleMovie.pivotY;
-					}
+				}
+				else
+				{
+					lastFeetPosY = doodleMovie.y + doodleMovie.pivotY;
 				}
 				
 				doodleMovie.y += yVelocity * deltaTime;
 			}
 			
-			//moving sticks  the Math.random()<0.01 drive them crazy
 			for each (stick in stageStickArr)
 			{
 				if (stick is MovingStick)
@@ -280,24 +281,22 @@ package states
 				launchPlayAnim();
 				updatePlayAnim(-1);
 			}
-			else
+			else if (!jetpack_jump)
 			{
 				/*doodleMovie.stop();*/
 				Assets._SmokePartSystem.stop();
-				
-				if (touchesObj[Keyboard.G] && inputTimer < getTimer())
-				{
-					inputTimer = getTimer() + oneSecond * 0.5;
-					I_AM_GOD = !I_AM_GOD;
-				}
-				if (touchesObj[Keyboard.J] && I_AM_GOD && inputTimer < getTimer())
-				{
-					inputTimer = getTimer() + oneSecond;
-					jetpack_jump = !jetpack_jump;
-				}
-				
 			}
-			
+			if (touchesObj[Keyboard.G] && inputTimer < getTimer())
+			{
+				inputTimer = getTimer() + oneSecond * 0.5;
+				I_AM_GOD = !I_AM_GOD;
+			}
+			else if (touchesObj[Keyboard.J] && I_AM_GOD && inputTimer < getTimer())
+			{
+				inputTimer = getTimer() + oneSecond;
+				jetpack_jump = !jetpack_jump;
+			}
+		
 			Assets._SmokePartSystem.emitterX = Assets._StarsPartSystem.emitterX = doodleMovie.x;
 			Assets._SmokePartSystem.emitterY = Assets._StarsPartSystem.emitterY = doodleMovie.y;
 		}
@@ -318,22 +317,22 @@ package states
 					glassStickArr.push(stick);
 			}
 			//remove old sticks
-			while (stageStickArr[stageStickArr.length - 1].y > -300)
+			while (stageStickArr[stageStickArr.length - 1].y > -plateformInterval * 1.5)
 			{
 				stick = getNewStick();
 				stick.x = Math.random() * (stage.stageWidth - stick.width) + stick.width * 0.5;
-				var max:Number = -200 * Math.min(1, score / 10000 + 0.5) + 10;
-				var min:Number = -200 * Math.min(0.5, score / 10000) - 20;
-				stick.y = stageStickArr[stageStickArr.length - 1].y  + min + Math.random()*(max-min);
+				var max:Number = -plateformInterval * Math.min(1, score / (score2SpawnBigOnes * 0.15) + 0.5) + stick.height;
+				var min:Number = -plateformInterval * Math.min(0.5, score / (score2SpawnBigOnes * 0.15)) - stick.height;
+				stick.y = stageStickArr[stageStickArr.length - 1].y  + min + Math.random() * (max - min);
 				stageStickArr.push(stick);
 				stage.addChild(stick);
 				var distance:Number = stageStickArr[stageStickArr.length - 2].y - stageStickArr[stageStickArr.length - 1].y;
-				if (Math.random() < 0.1 && distance > 60)
+				if (Math.random() < 0.1 && distance > yVelocityMax * 3)
 				{
 					stick = new BrokenStick();
 					stick.x = Math.random() * (stage.stageWidth - stick.width) + stick.width * 0.5;
-					stick.y = stageStickArr[stageStickArr.length - 1].y + Math.random() * (distance-40) + 20;
-					stageStickArr.splice(stageStickArr.length - 1,0, stick);
+					stick.y = stageStickArr[stageStickArr.length - 1].y + Math.random() * (distance - yVelocityMax * 2) + yVelocityMax;
+					stageStickArr.splice(stageStickArr.length - 1, 0, stick);
 					stage.addChild(stick);
 					Starling.juggler.add(stick);
 					stick.stop();
@@ -341,9 +340,9 @@ package states
 			}
 		}
 		
-		public function getNewStick():Stick
+		public function getNewStick () : Stick
 		{
-			if (Math.random() < (score < score2SpawnBigOnes ? (score2SpawnBigOnes * 0.1 - score) / (score2SpawnBigOnes * 0.11) : 0.05))
+			if (Math.random() < (score < score2SpawnBigOnes ? (score2SpawnBigOnes - score) * 0.1 / (score2SpawnBigOnes * 0.11) : 0.05))
 			{
 				if (normalStickArr.length)
 					return normalStickArr.pop();
@@ -373,7 +372,7 @@ package states
 			touchesObj[e.keyCode]= false;
 		}
 		
-		private function launchPlayAnim ():void 
+		private function launchPlayAnim () : void 
 		{
 			Assets._SmokePartSystem.start();
 			
@@ -406,9 +405,7 @@ package states
 		private function onRestartTriggered (e:Event) : void
 		{
 			this.game.changeState(Game.PLAY_STATE);
-			//this.game.changeState(Game.MENU_STATE);
 		}
-		
 		
 		/* INTERFACE interfaces.IState */
 		
