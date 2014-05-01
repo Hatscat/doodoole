@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:278a8cf07a3ba58625ac5f51b6446b75:fd3d0d2c75f53e42081bac349883b32b:321ff9e070eb53c44aa5eb9ac1c750ce$ -->
+<TextureAtlas imagePath="sonic_LB.png">
+    <SubTexture name="LB0001" x="2" y="2" width="62" height="80"/>
+    <SubTexture name="LB0002" x="66" y="2" width="62" height="80"/>
+    <SubTexture name="LB0003" x="130" y="2" width="62" height="80"/>
+    <SubTexture name="LB0004" x="2" y="84" width="62" height="80"/>
+</TextureAtlas>
