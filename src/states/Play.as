@@ -5,6 +5,7 @@ package states
 	import interfaces.IState;
 	import flash.ui.Keyboard;
 	import flash.geom.Rectangle;
+	import flash.utils.getTimer;
 	import classes.Doodle;
 	import classes.Stick;
 	import classes.NormalStick;
@@ -37,17 +38,28 @@ package states
 		private var doodleMovie:classes.Doodle;
 		private var touchesObj:Object = new Object();
 		
-		public static const xVelocityMax:int 	= 5;
-		public static const yVelocityMax:int 	= 20;
-		public static const GRAVITY:Number 		= 1;
-		public static const INERTIA:Number 		= 0.7;
-		public static const Score_w:int 		= 200;
-		public static const Score_h:int 		= 75;
+		public static const xVelocityMax:int 		= 5;
+		public static const yVelocityMax:int 		= 21;
+		public static const yVelocityMax_2:int 		= 50;
+		public static const GRAVITY:Number 			= 0.7;
+		public static const INERTIA:Number 			= 0.7;
+		public static const Score_w:int 			= 200;
+		public static const Score_h:int 			= 75;
+		public static const score2SpawnBigOnes:int 	= 90000;
+		//public static const oneSecond:int 			= 1000;
+		public static const oneSecond:int 			= 1000;
 		
-		private var time:Number;
+		private var inputTimer:Number;
+		private var jetpackTimer:Number;
+		private var shoesTimer:Number;
+		private var deltaTime:Number;
+		private var oldTime:Number;
 		private var I_AM_GOD:Boolean;
+		private var big_jump:Boolean;
+		private var jetpack_jump:Boolean;
 		private var xVelocity:Number;
 		private var yVelocity:Number;
+		private var lastFeetPosY:Number;
 		private var score:int;
 		private var i:int;
 		private var midStageY:int;
@@ -63,7 +75,6 @@ package states
 		{
 			super();
 			this.game = pGame;
-			trace("play state");
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		
@@ -99,10 +110,17 @@ package states
 			stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			I_AM_GOD = false;
+			jetpack_jump = false;
+			big_jump = false;
 			score = 0;
-			time = 0;
 			xVelocity = 0;
 			yVelocity = yVelocityMax;
+			lastFeetPosY = 0;
+			inputTimer = 0;
+			jetpackTimer = 0;
+			shoesTimer = 0;
+			deltaTime = 0;
+			oldTime = getTimer();
 			doodleMovie.x = stage.stageWidth * 0.5;
 			doodleMovie.y = stage.stageHeight * 0.9;
 			Assets._SmokePartSystem.emitterX = Assets._StarsPartSystem.emitterX = doodleMovie.x;
@@ -169,7 +187,13 @@ package states
 		
 		private function boucle (e:Event) : void
 		{
-			time += 1 / 0.06; // stage.frameRate
+			deltaTime = (getTimer() - oldTime) * 0.06 || 1; // scalé sur 60fps
+			oldTime = getTimer();
+			
+			if (jetpack_jump)
+			{
+				yVelocity = -yVelocityMax_2;
+			}
 			
 			if (doodleMovie.y <= midStageY && yVelocity < 0)
 			{
@@ -181,45 +205,43 @@ package states
 			}
 			else
 			{
-				if (yVelocity > 0) // en chute == peut collisionner
+				for (i = 0; i < 2; i++) //incase break through
 				{
-					var doodle_box:Rectangle = doodleMovie.getBounds(this);
-					
-					for each (stick in stageStickArr)
+					if (yVelocity > 0) // en chute == peut collisionner
 					{
-						var stick_box:Rectangle = stick.getBounds(this);
-					
-						if ((doodle_box.intersects(stick_box) && doodleMovie.y < stick.y)// collision
-							|| (doodleMovie.y > stage.stageHeight - doodleMovie.pivotY) // en bas
-								&& (I_AM_GOD || !score))
-						{
-							yVelocity = -yVelocityMax;
-						}
-						else if (doodleMovie.y > stage.stageHeight + doodleMovie.pivotY) // death
-						{
-							trace ("mort !");
-							gameOver();
-						}
-					
-					}
-				}
-				doodleMovie.y += yVelocity;
-				/*for (i = 0; i < 2; i++) //incase break through
-				{
-					
-					if (yVelocity >= 0)
+						var doodle_box:Rectangle = doodleMovie.getBounds(this);
+						
 						for each (stick in stageStickArr)
-							if (doodle.legs.hitTestObject(stick))
+						{
+							var stick_box:Rectangle = stick.getBounds(this);
+						
+							if ((doodle_box.intersects(stick_box) && lastFeetPosY < stick.y - stick.pivotY)// collision
+								|| (doodleMovie.y > stage.stageHeight - doodleMovie.pivotY) // en bas
+									&& (I_AM_GOD || !score))
+							{
 								if (stick is BrokenStick)
-									BrokenStick(stick).drop();
+										BrokenStick(stick).drop();
 								else
 								{
-									yVelocity = -yVelocityMax;
+									yVelocity = big_jump ? -yVelocityMax_2 : -yVelocityMax;
 									if (stick is GlassStick)
-										stick.y = stageHeight + 200;
+										stick.y = stage.stageHeight + 200;
 								}
-					doodle.y += doodle.vVelocity / 2;
-				}*/
+							}
+							else if (doodleMovie.y > stage.stageHeight + doodleMovie.pivotY) // death
+							{
+								//trace ("t'es mort !");
+								gameOver();
+							}
+						}
+					}
+					else
+					{
+						lastFeetPosY = doodleMovie.y + doodleMovie.pivotY;
+					}
+				}
+				
+				doodleMovie.y += yVelocity * deltaTime;
 			}
 			
 			//moving sticks  the Math.random()<0.01 drive them crazy
@@ -236,9 +258,9 @@ package states
 			
 			refreashSticks();
 			
-			doodleMovie.x += xVelocity;
+			doodleMovie.x += xVelocity * deltaTime;
 			xVelocity *= INERTIA;
-			yVelocity += GRAVITY;
+			yVelocity += GRAVITY * deltaTime;
 			
 			if (touchesObj[Keyboard.RIGHT])
 			{
@@ -261,7 +283,17 @@ package states
 				doodleMovie.stop();
 				Assets._SmokePartSystem.stop();
 				
-				if (touchesObj[Keyboard.G])	I_AM_GOD = true;
+				if (touchesObj[Keyboard.G] && inputTimer < getTimer())
+				{
+					inputTimer = getTimer() + oneSecond * 0.5;
+					I_AM_GOD = !I_AM_GOD;
+				}
+				if (touchesObj[Keyboard.J] && I_AM_GOD && inputTimer < getTimer())
+				{
+					inputTimer = getTimer() + oneSecond;
+					jetpack_jump = !jetpack_jump;
+				}
+				
 			}
 			
 			Assets._SmokePartSystem.emitterX = Assets._StarsPartSystem.emitterX = doodleMovie.x;
@@ -307,7 +339,7 @@ package states
 		
 		public function getNewStick():Stick
 		{
-			if (Math.random() < (score < 85000 ? (9000 - score) / 10000 : 0.05))
+			if (Math.random() < (score < score2SpawnBigOnes ? (score2SpawnBigOnes * 0.1 - score) / (score2SpawnBigOnes * 0.11) : 0.05))
 			{
 				if (normalStickArr.length)
 					return normalStickArr.pop();
@@ -358,14 +390,15 @@ package states
 			}
 		}
 		
-		private function onMenuBtnTriggered(e:Event) : void
+		private function onMenuBtnTriggered (e:Event) : void
 		{
 			this.game.changeState(Game.MENU_STATE);
 		}
 		
-		private function onRestartTriggered(e:Event) : void
+		private function onRestartTriggered (e:Event) : void
 		{
-			restart();
+			this.game.changeState(Game.PLAY_STATE);
+			//this.game.changeState(Game.MENU_STATE);
 		}
 		
 		
