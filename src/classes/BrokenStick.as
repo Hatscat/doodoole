@@ -1,5 +1,6 @@
 package classes 
 {
+	import starling.core.Starling;
 	import starling.events.Event;
 	/**
 	 * ...
@@ -10,23 +11,25 @@ package classes
 	
 		public function BrokenStick () 
 		{
-			super();
-			this.color = 0x7C5A2C;
+			super("plat_trap");
 		}
 		public function drop():void
 		{
-			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			this.play();
+			this.addEventListener(Event.COMPLETE, destroy);
 		}
 		
-		private function onEnterFrame(e:Event):void
+		private function destroy(e:Event):void
 		{
-			this.alpha *= 0.9;
+			this.removeEventListener(Event.COMPLETE, destroy);
+			this.stop();
+			Starling.juggler.remove(this);
+			onRemove(null);
 		}
 		
 		private function onRemove(e:Event):void
 		{
 			removeEventListener(Event.REMOVED_FROM_STAGE, onRemove);
-			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
 	}

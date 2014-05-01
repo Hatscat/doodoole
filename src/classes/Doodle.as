@@ -11,7 +11,7 @@ package classes
 	{
 		public function Doodle ()
 		{
-			super(Assets._sonicTextureAtlas.getTextures("LB"), 60);
+			super(Assets._nyanCatTextureAtlas.getTextures("nyanCat"), 15);
 			
 			this.pivotX = this.width * 0.5;
 			this.pivotY = this.height * 0.5;

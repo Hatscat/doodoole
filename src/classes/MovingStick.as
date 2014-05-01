@@ -11,8 +11,7 @@ package classes
 	
 		public function MovingStick () 
 		{
-			super();
-			this.color = 0x0998C2;
+			super("plat_move");
 			hVelocity = Math.random() > 0.5 ? SPEED_X : -SPEED_X;
 		}
 		

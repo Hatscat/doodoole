@@ -9,8 +9,7 @@ package classes
 		
 		public function GlassStick() 
 		{
-			super();
-			this.color = 0xFFFFFF;
+			super("plat_glass");
 		}
 		
 	}

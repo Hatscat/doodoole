@@ -9,8 +9,7 @@ package classes
 		
 		public function NormalStick()
 		{
-			super();
-			this.color = 0x00FF00;
+			super("plat_norm");
 		}
 		
 	}

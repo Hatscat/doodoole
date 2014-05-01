@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:24f348b5ea770195ed88935f912b489e:6ef34bed93ac7e8bcf44e5967d0583c6:939408cf6ca559594cf030168e4b5d27$ -->
+<TextureAtlas imagePath="nyanCatJetpack.png">
+    <SubTexture name="nyanCatJetpack01" x="2" y="2" width="55" height="107"/>
+    <SubTexture name="nyanCatJetpack02" x="59" y="2" width="55" height="107"/>
+    <SubTexture name="nyanCatJetpack03" x="116" y="2" width="55" height="107"/>
+    <SubTexture name="nyanCatJetpack04" x="173" y="2" width="55" height="107"/>
+    <SubTexture name="nyanCatJetpack05" x="2" y="111" width="55" height="107"/>
+</TextureAtlas>

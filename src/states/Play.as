@@ -12,6 +12,7 @@ package states
 	import classes.MovingStick;
 	import classes.BrokenStick;
 	import classes.GlassStick;
+	import starling.display.Image;
 	import starling.events.KeyboardEvent;
 	import starling.display.Button;
 	import starling.display.Sprite;
@@ -64,7 +65,8 @@ package states
 		private var i:int;
 		private var midStageY:int;
 		private var scoreText:TextField;
-	
+		private var playBackground:Image;
+		
 		private var normalStickArr:Vector.<NormalStick>;
 		private var stageStickArr:Vector.<Stick>;
 		private var movingStickArr:Vector.<MovingStick>;
@@ -80,6 +82,9 @@ package states
 		
 		private function init(e:Event) : void
 		{
+			playBackground = new Image(Assets._playBackground);
+			addChild(playBackground);
+			
 			midStageY = stage.stageHeight * 0.5;
 			
 			scoreText = new TextField(Score_w, Score_h, "text", "Arial", 24, Color.RED);
@@ -264,23 +269,20 @@ package states
 			
 			if (touchesObj[Keyboard.RIGHT])
 			{
-				if ( !doodleMovie.isPlaying )
-				{
-					launchPlayAnim();
-				}
+
+				launchPlayAnim();
+
 				updatePlayAnim(1);
 			}				
 			else if (touchesObj[Keyboard.LEFT])
 			{
-				if ( !doodleMovie.isPlaying )
-				{
-					launchPlayAnim();
-				}
+
+				launchPlayAnim();
 				updatePlayAnim(-1);
 			}
 			else
 			{
-				doodleMovie.stop();
+				/*doodleMovie.stop();*/
 				Assets._SmokePartSystem.stop();
 				
 				if (touchesObj[Keyboard.G] && inputTimer < getTimer())
@@ -333,6 +335,8 @@ package states
 					stick.y = stageStickArr[stageStickArr.length - 1].y + Math.random() * (distance-40) + 20;
 					stageStickArr.splice(stageStickArr.length - 1,0, stick);
 					stage.addChild(stick);
+					Starling.juggler.add(stick);
+					stick.stop();
 				}
 			}
 		}
@@ -372,7 +376,11 @@ package states
 		private function launchPlayAnim ():void 
 		{
 			Assets._SmokePartSystem.start();
-			doodleMovie.play();
+			
+			if ( !doodleMovie.isPlaying )
+			{
+				doodleMovie.play();
+			}
 		}
 		
 		private function updatePlayAnim (dir:Number) : void 
