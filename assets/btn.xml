@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:61671e745e53b579602e25d475fbf8c6:b7fa1bc5410214fff8d7abc0eeed6e1b:410d29e98dc6a9b3cc9e7c64d4a4405e$ -->
+<!-- $TexturePacker:SmartUpdate:1c2b2569c90f3135d8a49db3dcc3ed9c:e0b6ee18be712b2ea67137b995504e58:410d29e98dc6a9b3cc9e7c64d4a4405e$ -->
 <TextureAtlas imagePath="btn.png">
-    <SubTexture name="btn_down" x="2" y="2" width="180" height="58"/>
-    <SubTexture name="btn_up" x="2" y="62" width="180" height="58"/>
+    <SubTexture name="btn_down" x="2" y="2" width="200" height="50"/>
+    <SubTexture name="btn_up" x="2" y="54" width="200" height="50"/>
 </TextureAtlas>

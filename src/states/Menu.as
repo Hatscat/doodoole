@@ -3,6 +3,7 @@ package states
 	import core.Game;
 	import interfaces.IState;
 	import starling.display.Button;
+	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import core.Assets;
@@ -17,6 +18,7 @@ package states
 		private var game:Game;
 		private var boutonPlay:Button;
 		private var boutonShop:Button;
+		private var menuBack:Image;
 		private var boutonCredits:Button;
 
 		public function Menu(pGame:Game) 
@@ -36,6 +38,9 @@ package states
 			// 1 - Texture à l'état haut
 			// 2 - Texte du bouton
 			// 3 - Texture à l'état bas
+			menuBack = new Image(Assets._menuBackground);
+			addChild(menuBack);
+			
 			boutonPlay = new Button(Assets._btnTextureAtlas.getTexture("btn_up"),
 											"Play",
 											Assets._btnTextureAtlas.getTexture("btn_down"));
@@ -43,9 +48,9 @@ package states
 			boutonPlay.scaleWhenDown = 0.9;
 			boutonPlay.pivotX = boutonPlay.width * 0.5;
 			boutonPlay.pivotY = boutonPlay.height * 0.5;
-			boutonPlay.fontColor = 0xffffff;
+			boutonPlay.fontColor = 0x000000;
 			boutonPlay.x = stage.stageWidth * 0.5;
-			boutonPlay.y = 150;
+			boutonPlay.y = stage.stageHeight *0.5 - boutonPlay.height/2 - 100;
 			boutonPlay.addEventListener(Event.TRIGGERED, onTriggered);
 			addChild(boutonPlay);
 			
@@ -55,9 +60,9 @@ package states
 			boutonShop.scaleWhenDown = 0.9;
 			boutonShop.pivotX = boutonShop.width * 0.5;
 			boutonShop.pivotY = boutonShop.height * 0.5;
-			boutonShop.fontColor = 0xffffff;
+			boutonShop.fontColor = 0x000000;
 			boutonShop.x = stage.stageWidth * 0.5;
-			boutonShop.y = 250;
+			boutonShop.y = stage.stageHeight *0.5 - boutonPlay.height/2;
 			boutonShop.addEventListener(Event.TRIGGERED, onTriggered);
 			addChild(boutonShop);
 			
@@ -67,11 +72,12 @@ package states
 			boutonCredits.scaleWhenDown = 0.9;
 			boutonCredits.pivotX = boutonCredits.width * 0.5;
 			boutonCredits.pivotY = boutonCredits.height * 0.5;
-			boutonCredits.fontColor = 0xffffff;
+			boutonCredits.fontColor = 0x000000;
 			boutonCredits.x = stage.stageWidth * 0.5;
-			boutonCredits.y = 350;
+			boutonCredits.y = stage.stageHeight *0.5 - boutonPlay.height/2 + 100;
 			boutonCredits.addEventListener(Event.TRIGGERED, onTriggered);
 			addChild(boutonCredits);
+			
 		}
 		
 		private function onTriggered(e:Event):void

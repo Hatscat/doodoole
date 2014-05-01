@@ -19,6 +19,8 @@ package core
 		public static const PLAY_STATE : int 	= 1;
 		public static const SHOP_STATE : int 	= 2;
 		public static const CREDITS_STATE : int = 3;
+		public static var skin:int = 1;
+		public static var skinOwn:Array = new Array(0, 1);
 
 		public function Game()
 		{
