@@ -10,7 +10,7 @@ package
 	 * ...
 	 * @author LB & MLR
 	 */
-	[SWF(width=640, height=960, frameRate=60, backgroundColor=0x7799FF)]
+	[SWF(width=640, height=960, frameRate=60, backgroundColor=0xCCCCFF)]
 	public class Main extends Sprite 
 	{
 		public function Main():void 

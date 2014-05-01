@@ -25,7 +25,7 @@ package states
 		{
 			super();
 			this.game = pGame;
-			trace("Menu constructeur");
+			//trace("Menu constructeur");
 			addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 

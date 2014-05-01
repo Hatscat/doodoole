@@ -9,8 +9,7 @@ package classes
 	 */
 	public class Doodle extends MovieClip 
 	{
-	
-		public function Doodle()
+		public function Doodle ()
 		{
 			super(Assets._sonicTextureAtlas.getTextures("LB"), 60);
 			
