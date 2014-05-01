@@ -24,7 +24,7 @@ package classes
 			this.removeEventListener(Event.COMPLETE, destroy);
 			this.stop();
 			Starling.juggler.remove(this);
-			onRemove(null);
+			this.y = -200;
 		}
 		
 		private function onRemove(e:Event):void

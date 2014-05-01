@@ -63,6 +63,7 @@ package states
 		private var lastFeetPosY:Number;
 		private var score:int;
 		private var i:int;
+		private var cpt:int = 0;
 		private var midStageY:int;
 		private var scoreText:TextField;
 		private var playBackground:Image;
@@ -163,30 +164,7 @@ package states
 			//gameOverPanel.loadHighScore(so.data["highScores"]);
 			
 			stage.removeEventListener(Event.ENTER_FRAME, boucle);
-			
-			boutonMenu = new Button(Assets._btnTextureAtlas.getTexture("btn_up"),
-											"Menu",
-											Assets._btnTextureAtlas.getTexture("btn_down"));
-			boutonMenu.scaleWhenDown = 0.9;
-			boutonMenu.pivotX = boutonMenu.width * 0.5;
-			boutonMenu.pivotY = boutonMenu.height * 0.5;
-			boutonMenu.fontColor = 0xffffff;
-			boutonMenu.x = stage.stageWidth * 0.5;
-			boutonMenu.y = stage.stageHeight * 0.6;
-			boutonMenu.addEventListener(Event.TRIGGERED, onMenuBtnTriggered);
-			addChild(boutonMenu);
-			
-			boutonRestart = new Button(Assets._btnTextureAtlas.getTexture("btn_up"),
-											"Restart",
-											Assets._btnTextureAtlas.getTexture("btn_down"));
-			boutonRestart.scaleWhenDown = 0.9;
-			boutonRestart.pivotX = boutonRestart.width * 0.5;
-			boutonRestart.pivotY = boutonRestart.height * 0.5;
-			boutonRestart.fontColor = 0xffffff;
-			boutonRestart.x = stage.stageWidth * 0.5;
-			boutonRestart.y = stage.stageHeight * 0.7;
-			boutonRestart.addEventListener(Event.TRIGGERED, onRestartTriggered);
-			addChild(boutonRestart);
+			stage.addEventListener(Event.ENTER_FRAME, boucleMort);
 			
 		}
 		
@@ -249,6 +227,7 @@ package states
 				doodleMovie.y += yVelocity * deltaTime;
 			}
 			
+			
 			//moving sticks  the Math.random()<0.01 drive them crazy
 			for each (stick in stageStickArr)
 			{
@@ -302,6 +281,49 @@ package states
 			Assets._SmokePartSystem.emitterY = Assets._StarsPartSystem.emitterY = doodleMovie.y;
 		}
 		
+		private function boucleMort (e:Event) : void
+		{
+				
+			for each (var stick:Stick in stageStickArr)
+			{
+				if (!stick.tooHigh)
+				{
+					stick.y -= 15;
+					if (stick.y < -stick.width)
+					{
+						stick.tooHigh = true;
+						cpt++;
+					}
+				}
+			}
+				
+			if (cpt >= stageStickArr.length)
+			{
+				boutonMenu = new Button(Assets._btnTextureAtlas.getTexture("btn_up"),
+										"Menu",
+										Assets._btnTextureAtlas.getTexture("btn_down"));
+				boutonMenu.scaleWhenDown = 0.9;
+				boutonMenu.pivotX = boutonMenu.width * 0.5;
+				boutonMenu.pivotY = boutonMenu.height * 0.5;
+				boutonMenu.fontColor = 0xffffff;
+				boutonMenu.x = stage.stageWidth * 0.5;
+				boutonMenu.y = stage.stageHeight * 0.6;
+				boutonMenu.addEventListener(Event.TRIGGERED, onMenuBtnTriggered);
+				addChild(boutonMenu);
+			
+				boutonRestart = new Button(Assets._btnTextureAtlas.getTexture("btn_up"),
+										"Restart",
+										Assets._btnTextureAtlas.getTexture("btn_down"));
+				boutonRestart.scaleWhenDown = 0.9;
+				boutonRestart.pivotX = boutonRestart.width * 0.5;
+				boutonRestart.pivotY = boutonRestart.height * 0.5;
+				boutonRestart.fontColor = 0xffffff;
+				boutonRestart.x = stage.stageWidth * 0.5;
+				boutonRestart.y = stage.stageHeight * 0.7;
+				boutonRestart.addEventListener(Event.TRIGGERED, onRestartTriggered);
+				addChild(boutonRestart);
+			}
+		}
 		private function refreashSticks():void
 		{
 			var stick:Stick;
