@@ -7,6 +7,7 @@ package states
 	import flash.geom.Rectangle;
 	import flash.utils.getTimer;
 	import classes.Doodle;
+	import classes.Bonus;
 	import classes.Stick;
 	import classes.NormalStick;
 	import classes.MovingStick;
@@ -40,14 +41,17 @@ package states
 		private var touchesObj:Object = new Object();
 		
 		public static const xVelocityMax:int 		= 4;
-		public static const yVelocityMax:int 		= 22;
+		public static const yVelocityMax:int 		= 21;
 		public static const yVelocityMax_2:int 		= 50;
-		public static const GRAVITY:Number 			= 0.7;
+		public static const jetpackTimeBonus:int 	= 3000;
+		public static const shoesTimeBonus:int 		= 4000;
+		public static const GRAVITY:Number 			= 0.6;
 		public static const INERTIA:Number 			= 0.7;
+		public static const magicFind:Number 		= 5000;
 		public static const Score_w:int 			= 200;
 		public static const Score_h:int 			= 75;
 		public static const score2SpawnBigOnes:int 	= 90000;
-		public static const plateformInterval:int 	= 250;
+		public static const plateformInterval:int 	= 210;
 		public static const oneSecond:int 			= 1000;
 		
 		private var inputTimer:Number;
@@ -56,7 +60,7 @@ package states
 		private var deltaTime:Number;
 		private var oldTime:Number;
 		private var I_AM_GOD:Boolean;
-		private var big_jump:Boolean;
+		private var can_big_jump:Boolean;
 		private var jetpack_jump:Boolean;
 		private var xVelocity:Number;
 		private var yVelocity:Number;
@@ -67,6 +71,7 @@ package states
 		private var scoreText:TextField;
 		private var playBackground:Image;
 		
+		private var bonusArr:Vector.<Bonus>;
 		private var normalStickArr:Vector.<NormalStick>;
 		private var stageStickArr:Vector.<Stick>;
 		private var movingStickArr:Vector.<MovingStick>;
@@ -87,7 +92,7 @@ package states
 			
 			midStageY = stage.stageHeight * 0.5;
 			
-			scoreText = new TextField(Score_w, Score_h, "text", "Arial", 24, Color.RED);
+			scoreText = new TextField(Score_w, Score_h, "0", "Arial", 28, Color.WHITE);
 			scoreText.hAlign = HAlign.LEFT;
 			scoreText.vAlign = VAlign.TOP;
 			stage.addChild(scoreText);
@@ -116,7 +121,7 @@ package states
 			stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			I_AM_GOD = false;
 			jetpack_jump = false;
-			big_jump = false;
+			can_big_jump = false;
 			score = 0;
 			xVelocity = 0;
 			yVelocity = yVelocityMax;
@@ -136,6 +141,7 @@ package states
 			brokenStickArr = new Vector.<BrokenStick>;
 			glassStickArr = new Vector.<GlassStick>;
 			stageStickArr = new Vector.<Stick>;
+			bonusArr = new Vector.<Bonus>;
 			stageStickArr.push(new NormalStick());
 			stage.addChild(stageStickArr[0]);
 			stageStickArr[0].x = Math.random() * (stage.stageWidth - Stick.STICK_WIDTH) + Stick.STICK_WIDTH * 0.5;
@@ -198,11 +204,12 @@ package states
 			if (jetpack_jump)
 			{
 				yVelocity = -yVelocityMax_2;
-				
-				if (!doodleMovie.isPlaying)
-				{
-					launchPlayAnim();
-				}
+				launchPlayAnim();
+			}
+			
+			if (getTimer() < shoesTimer)
+			{
+				can_big_jump = true;
 			}
 			
 			if (doodleMovie.y <= midStageY && yVelocity < 0)
@@ -229,17 +236,40 @@ package states
 									BrokenStick(stick).drop();
 							else
 							{
-								yVelocity = big_jump ? -yVelocityMax_2 : -yVelocityMax;
+								yVelocity = can_big_jump ? -yVelocityMax_2 : -yVelocityMax;
 								if (stick is GlassStick)
 									stick.y = stage.stageHeight * 1.1; // destruction
+								can_big_jump = false;
 							}
 						}
 						else if (doodleMovie.y > stage.stageHeight + doodleMovie.pivotY) // en bas
 						{
 							if (I_AM_GOD || !score)
-								yVelocity = big_jump ? -yVelocityMax_2 : -yVelocityMax;
+								yVelocity = can_big_jump ? -yVelocityMax_2 : -yVelocityMax;
 							else  // death
 								gameOver();
+						}
+					}
+					for each (var bonus:Bonus in bonusArr)
+					{
+						var bonus_box:Rectangle = bonus.getBounds(this);
+					
+						if (doodle_box.intersects(bonus_box) && lastFeetPosY < bonus.y) // loot !
+						{
+							trace("j'ai ramassé un item de type " + bonus.kind + " !!!");
+							
+							switch (bonus.kind)
+							{
+								case 1 : // un ressort
+									can_big_jump = true;
+								break;
+								case 2 : // des chaussures
+									shoesTimer = getTimer() + shoesTimeBonus;
+								break;
+								case 3 : // un jetpack
+									jetpackTimer = getTimer() + jetpackTimeBonus;
+								break;
+							}
 						}
 					}
 				}
@@ -256,7 +286,7 @@ package states
 				if (stick is MovingStick)
 				{
 					var temp:MovingStick = stick as MovingStick;
-					temp.x += temp.hVelocity;
+					temp.x += temp.hVelocity * deltaTime;
 					if ((temp.x > stage.stageWidth - temp.width) && temp.hVelocity > 0 || (temp.x < temp.width) && temp.hVelocity < 0 || Math.random() < 0.01)
 						temp.hVelocity *= -1;
 				}
@@ -270,14 +300,11 @@ package states
 			
 			if (touchesObj[Keyboard.RIGHT])
 			{
-
 				launchPlayAnim();
-
 				updatePlayAnim(1);
 			}				
 			else if (touchesObj[Keyboard.LEFT])
 			{
-
 				launchPlayAnim();
 				updatePlayAnim(-1);
 			}
@@ -301,11 +328,17 @@ package states
 			Assets._SmokePartSystem.emitterY = Assets._StarsPartSystem.emitterY = doodleMovie.y;
 		}
 		
-		private function refreashSticks():void
+		private function refreashSticks () : void
 		{
+			while (bonusArr.length && bonusArr[0].y > stage.stageHeight * 1.1)
+			{
+				stage.removeChild(bonusArr[0]);
+				bonusArr.shift();
+			}
+			
 			var stick:Stick;
 			//add new sticks
-			while (stageStickArr[0].y > stage.stageHeight)
+			while (stageStickArr[0].y > stage.stageHeight * 1.1)
 			{
 				stage.removeChild(stageStickArr[0]);
 				stick = stageStickArr.shift();
@@ -326,7 +359,21 @@ package states
 				stick.y = stageStickArr[stageStickArr.length - 1].y  + min + Math.random() * (max - min);
 				stageStickArr.push(stick);
 				stage.addChild(stick);
+				
+				var randBonus:int = Math.min(3, Math.random() * Math.random() * Math.random() * (score / magicFind) | 0);
+				if (randBonus)
+				{
+					var bonus:Bonus = getNewBonus(randBonus);
+					bonus.x = stick.x;
+					bonus.y = stick.y - stick.pivotY;
+					bonusArr.push(bonus);
+					stage.addChild(bonus);
+					Starling.juggler.add(bonus);
+					trace("un bonus de type " + randBonus + " est arrivée!");
+				}
+				
 				var distance:Number = stageStickArr[stageStickArr.length - 2].y - stageStickArr[stageStickArr.length - 1].y;
+				
 				if (Math.random() < 0.1 && distance > yVelocityMax * 3)
 				{
 					stick = new BrokenStick();
@@ -360,6 +407,25 @@ package states
 					return glassStickArr.pop();
 				return new GlassStick();
 			}
+		}
+		
+		public function getNewBonus (kind:int) : Bonus
+		{
+			var b:Bonus;
+			switch (kind) 
+			{
+				case 1:
+					b = new Bonus("plat_norm"); //
+				break;
+				case 2:
+					b = new Bonus("plat_trap"); //
+				break;
+				case 3:
+					b = new Bonus("plat_norm"); //
+				break;
+			}
+			b.kind = kind;
+			return b;
 		}
 		
 		private function onKeyDown (e:KeyboardEvent) : void

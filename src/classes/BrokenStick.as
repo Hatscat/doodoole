@@ -19,7 +19,7 @@ package classes
 			this.addEventListener(Event.COMPLETE, destroy);
 		}
 		
-		private function destroy(e:Event):void
+		private function destroy (e:Event) : void
 		{
 			this.removeEventListener(Event.COMPLETE, destroy);
 			this.stop();
@@ -27,7 +27,7 @@ package classes
 			onRemove(null);
 		}
 		
-		private function onRemove(e:Event):void
+		private function onRemove (e:Event) : void
 		{
 			removeEventListener(Event.REMOVED_FROM_STAGE, onRemove);
 		}
