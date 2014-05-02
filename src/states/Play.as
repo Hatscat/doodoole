@@ -108,15 +108,18 @@ package states
 			Starling.juggler.add(Assets._SmokePartSystem);
 			
 			doodleMovie = new Doodle();
-			stage.addChild(doodleMovie);
-			Starling.juggler.add(doodleMovie);
+			stage.addChild(doodleMovie.idle);
+			stage.addChild(doodleMovie.jetPack);
+			Starling.juggler.add(doodleMovie.idle);
+			Starling.juggler.add(doodleMovie.jetPack);
 			
 			stage.addChild(Assets._StarsPartSystem);
 			Assets._StarsPartSystem.start();
 			Starling.juggler.add(Assets._StarsPartSystem);
 			
 			// OPTIMISATION
-			doodleMovie.touchable = false;
+			doodleMovie.idle.touchable = false;
+			doodleMovie.jetPack.touchable = false;
 			
 			restart();
 		}
@@ -141,7 +144,11 @@ package states
 			gameOverTextfield.y = -400;
 			oldTime = getTimer();
 			doodleMovie.x = stage.stageWidth * 0.5;
+			doodleMovie.idle.x = stage.stageWidth * 0.5;
+			doodleMovie.jetPack.x = stage.stageWidth * 0.5;
 			doodleMovie.y = stage.stageHeight * 0.9;
+			doodleMovie.idle.y = stage.stageHeight * 0.9;
+			doodleMovie.jetPack.y = stage.stageHeight * 0.9;
 			Assets._SmokePartSystem.emitterX = Assets._StarsPartSystem.emitterX = doodleMovie.x;
 			Assets._SmokePartSystem.emitterY = doodleMovie.y + doodleMovie.height / 4;
 			Assets._StarsPartSystem.emitterY = doodleMovie.y;
@@ -189,6 +196,8 @@ package states
 			
 			if (jetpack_jump || getTimer() < jetpackTimer)
 			{
+				doodleMovie.idle.visible = false;
+				doodleMovie.jetPack.visible = true;
 				yVelocity = -yVelocityMax_2;
 				launchPlayAnim();
 			}
@@ -196,6 +205,8 @@ package states
 			if (doodleMovie.y <= midStageY && yVelocity < 0)
 			{
 				doodleMovie.y = midStageY;
+				doodleMovie.idle.y = midStageY;
+				doodleMovie.jetPack.y = midStageY;
 				for each (var stick:Stick in stageStickArr)
 					stick.y -= yVelocity;
 				for each (var bonus:Bonus in bonusArr)
@@ -207,7 +218,7 @@ package states
 			{
 				if (yVelocity > 0) // en chute == peut collisionner
 				{
-					var doodle_box:Rectangle = doodleMovie.getBounds(this);
+					var doodle_box:Rectangle = doodleMovie.idle.getBounds(this);
 					
 					for each (var bonus:Bonus in bonusArr)
 					{
@@ -270,6 +281,8 @@ package states
 				}
 				
 				doodleMovie.y += yVelocity * deltaTime;
+				doodleMovie.idle.y += yVelocity * deltaTime;
+				doodleMovie.idle.y += yVelocity * deltaTime;
 			}
 			
 			for each (stick in stageStickArr)
@@ -286,6 +299,8 @@ package states
 			refreashSticks();
 			
 			doodleMovie.x += xVelocity * deltaTime;
+			doodleMovie.idle.x += xVelocity * deltaTime;
+			doodleMovie.jetPack.x += xVelocity * deltaTime;
 			xVelocity *= INERTIA;
 			yVelocity += GRAVITY * deltaTime;
 			
@@ -459,13 +474,13 @@ package states
 			switch (kind) 
 			{
 				case 1: // ressort
-					b = new Bonus("plat_norm"); //
+					b = new Bonus("ressortItem"); 
 				break;
 				case 2: // chaussure
-					b = new Bonus("plat_trap"); //
+					b = new Bonus("superManItem"); 
 				break;
 				case 3: // jetpack
-					b = new Bonus("plat_norm"); //
+					b = new Bonus("trampolineItem");
 				break;
 			}
 			b.kind = kind;
@@ -486,24 +501,31 @@ package states
 		{
 			Assets._SmokePartSystem.start();
 			
-			if ( !doodleMovie.isPlaying )
+			if ( !doodleMovie.idle.isPlaying || !doodleMovie.jetPack.isPlaying)
 			{
-				doodleMovie.play();
+				doodleMovie.idle.play();
+				doodleMovie.jetPack.play();
 			}
 		}
 		
 		private function updatePlayAnim (dir:Number) : void 
 		{
 			doodleMovie.scaleX = 1 * dir;
+			doodleMovie.idle.scaleX = 1 * dir;
+			doodleMovie.jetPack.scaleX = 1 * dir;
 			xVelocity += xVelocityMax * dir;
 			
 			if (doodleMovie.x < 0)
 			{
 				doodleMovie.x = stage.stageWidth;
+				doodleMovie.idle.x = stage.stageWidth;
+				doodleMovie.jetPack.x = stage.stageWidth;
 			}
 			else if (doodleMovie.x > stage.stageWidth)
 			{
 				doodleMovie.x = 0;
+				doodleMovie.idle.x = 0;
+				doodleMovie.jetPack.x = 0;
 			}
 		}
 		

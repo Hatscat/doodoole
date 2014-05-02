@@ -13,7 +13,7 @@ package classes
 		
 		public function Bonus (textureToGet:String) : void
 		{
-			super(Assets._plateformesTextureAtlas.getTextures(textureToGet), 10);
+			super(Assets._itemsTextureAtlas.getTextures(textureToGet), 10);
 			
 			this.pivotX = this.width * 0.5;
 			this.pivotY = this.height;
