@@ -40,13 +40,13 @@ package states
 		private var doodleMovie:classes.Doodle;
 		private var touchesObj:Object = new Object();
 		
-		public static const xVelocityMax:int 		= 4;
+		public static const xVelocityMax:int 		= 1;
 		public static const yVelocityMax:int 		= 21;
 		public static const yVelocityMax_2:int 		= 50;
 		public static const jetpackTimeBonus:int 	= 3000;
 		public static const shoesTimeBonus:int 		= 4000;
 		public static const GRAVITY:Number 			= 0.6;
-		public static const INERTIA:Number 			= 0.7;
+		public static const INERTIA:Number 			= 0.95;
 		public static const magicFind:Number 		= 5000;
 		public static const Score_w:int 			= 200;
 		public static const Score_h:int 			= 75;
@@ -94,12 +94,12 @@ package states
 			
 			midStageY = stage.stageHeight * 0.5;
 			
-			scoreText = new TextField(Score_w, Score_h, "score", "Arial", 36, Color.RED);
+			scoreText = new TextField(Score_w, Score_h, "score", "Arial", 36, Color.WHITE);
 			scoreText.hAlign = HAlign.LEFT;
 			scoreText.vAlign = VAlign.TOP;
 			stage.addChild(scoreText);
 			
-			gameOverTextfield = new TextField(300, 300, "Game Over", "Arial", 60, Color.RED);
+			gameOverTextfield = new TextField(300, 300, "Game Over", "Arial", 72, Color.PURPLE);
 			gameOverTextfield.x = stage.stageWidth/2 - gameOverTextfield.width/2;
 			gameOverTextfield.y = -200;
 			stage.addChild(gameOverTextfield);
@@ -413,7 +413,7 @@ package states
 				
 				var distance:Number = stageStickArr[stageStickArr.length - 2].y - stageStickArr[stageStickArr.length - 1].y;
 				
-				if (Math.random() < 0.1 && distance > yVelocityMax * 3)
+				if (score > score2SpawnBigOnes * 0.04 && Math.random() < 0.1 && distance > yVelocityMax * 3)
 				{
 					stick = new BrokenStick();
 					stick.x = Math.random() * (stage.stageWidth - stick.width) + stick.width * 0.5;
