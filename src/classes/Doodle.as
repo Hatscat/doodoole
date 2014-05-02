@@ -16,8 +16,6 @@ package classes
 		
 		public function Doodle ()
 		{
-
-			
 			idle = new MovieClip(Assets._nyanCatTextureAtlas.getTextures(Game.skin == 1 ? "nyanCatMod1_" : "nyanCatMod2_"), 15);
 			idle.pivotX = idle.width * 0.5;
 			idle.pivotY = idle.height * 0.5;

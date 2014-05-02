@@ -43,7 +43,7 @@ package states
 		
 		public static const xVelocityMax:int 		= 1;
 		public static const yVelocityMax:int 		= 20;
-		public static const yVelocityMax_2:int 		= 50;
+		public static const yVelocityMax_2:int 		= 44;
 		public static const jetpackTimeBonus:int 	= 3333;
 		public static const shoesTimeBonus:int 		= 3333;
 		public static const GRAVITY:Number 			= 0.6;
@@ -216,7 +216,7 @@ package states
 				launchPlayAnim();
 			}
 			
-			if (doodleMovie.y <= midStageY && yVelocity < 0)
+			if (doodleMovie.y <= midStageY && yVelocity < 0) // acceleration
 			{
 				doodleMovie.y = midStageY;
 				doodleMovie.idle.y = midStageY;
@@ -289,7 +289,7 @@ package states
 								can_big_jump = false;
 							}
 						}
-						else if (doodleMovie.y > stage.stageHeight + doodleMovie.pivotY) // en bas
+						else if (doodleMovie.y > stage.stageHeight - doodleMovie.pivotY) // en bas
 						{
 							if (I_AM_GOD || !score)
 								yVelocity = can_big_jump ? -yVelocityMax_2 : -yVelocityMax;
@@ -308,7 +308,7 @@ package states
 				
 				doodleMovie.y += yVelocity * deltaTime;
 				doodleMovie.idle.y += yVelocity * deltaTime;
-				doodleMovie.idle.y += yVelocity * deltaTime;
+				doodleMovie.jetPack.y += yVelocity * deltaTime;
 			}
 			
 			for each (stick in stageStickArr)
