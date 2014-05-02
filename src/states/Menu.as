@@ -49,6 +49,7 @@ package states
 			boutonPlay.pivotX = boutonPlay.width * 0.5;
 			boutonPlay.pivotY = boutonPlay.height * 0.5;
 			boutonPlay.fontColor = 0x000000;
+			boutonPlay.fontSize = 30;
 			boutonPlay.x = stage.stageWidth * 0.5;
 			boutonPlay.y = stage.stageHeight *0.5 - boutonPlay.height/2 - 100;
 			boutonPlay.addEventListener(Event.TRIGGERED, onTriggered);
@@ -61,6 +62,7 @@ package states
 			boutonShop.pivotX = boutonShop.width * 0.5;
 			boutonShop.pivotY = boutonShop.height * 0.5;
 			boutonShop.fontColor = 0x000000;
+			boutonShop.fontSize = 25;
 			boutonShop.x = stage.stageWidth * 0.5;
 			boutonShop.y = stage.stageHeight *0.5 - boutonPlay.height/2;
 			boutonShop.addEventListener(Event.TRIGGERED, onTriggered);
@@ -73,6 +75,7 @@ package states
 			boutonCredits.pivotX = boutonCredits.width * 0.5;
 			boutonCredits.pivotY = boutonCredits.height * 0.5;
 			boutonCredits.fontColor = 0x000000;
+			boutonCredits.fontSize = 25;
 			boutonCredits.x = stage.stageWidth * 0.5;
 			boutonCredits.y = stage.stageHeight *0.5 - boutonPlay.height/2 + 100;
 			boutonCredits.addEventListener(Event.TRIGGERED, onTriggered);
