@@ -321,7 +321,7 @@ package states
 			{
 				if (!stick.tooHigh)
 				{
-					stick.y -= 20;
+					stick.y -= 20*deltaTime;
 					if (stick.y < -stick.width)
 					{
 						stick.tooHigh = true;
