@@ -67,8 +67,10 @@ package states
 		private var lastFeetPosY:Number;
 		private var score:int;
 		private var i:int;
+		private var cpt:int = 0;
 		private var midStageY:int;
 		private var scoreText:TextField;
+		private var gameOverTextfield:TextField;
 		private var playBackground:Image;
 		
 		private var bonusArr:Vector.<Bonus>;
@@ -92,10 +94,15 @@ package states
 			
 			midStageY = stage.stageHeight * 0.5;
 			
-			scoreText = new TextField(Score_w, Score_h, "0", "Arial", 28, Color.WHITE);
+			scoreText = new TextField(Score_w, Score_h, "score", "Arial", 36, Color.RED);
 			scoreText.hAlign = HAlign.LEFT;
 			scoreText.vAlign = VAlign.TOP;
 			stage.addChild(scoreText);
+			
+			gameOverTextfield = new TextField(300, 300, "Game Over", "Arial", 60, Color.RED);
+			gameOverTextfield.x = stage.stageWidth/2 - gameOverTextfield.width/2;
+			gameOverTextfield.y = -200;
+			stage.addChild(gameOverTextfield);
 			
 			stage.addChild(Assets._SmokePartSystem);
 			Starling.juggler.add(Assets._SmokePartSystem);
@@ -130,6 +137,8 @@ package states
 			jetpackTimer = 0;
 			shoesTimer = 0;
 			deltaTime = 0;
+			cpt = 0;
+			gameOverTextfield.y = -400;
 			oldTime = getTimer();
 			doodleMovie.x = stage.stageWidth * 0.5;
 			doodleMovie.y = stage.stageHeight * 0.9;
@@ -169,30 +178,7 @@ package states
 			//gameOverPanel.loadHighScore(so.data["highScores"]);
 			
 			stage.removeEventListener(Event.ENTER_FRAME, boucle);
-			
-			boutonMenu = new Button(Assets._btnTextureAtlas.getTexture("btn_up"),
-											"Menu",
-											Assets._btnTextureAtlas.getTexture("btn_down"));
-			boutonMenu.scaleWhenDown = 0.9;
-			boutonMenu.pivotX = boutonMenu.width * 0.5;
-			boutonMenu.pivotY = boutonMenu.height * 0.5;
-			boutonMenu.fontColor = 0xffffff;
-			boutonMenu.x = stage.stageWidth * 0.5;
-			boutonMenu.y = stage.stageHeight * 0.6;
-			boutonMenu.addEventListener(Event.TRIGGERED, onMenuBtnTriggered);
-			addChild(boutonMenu);
-			
-			boutonRestart = new Button(Assets._btnTextureAtlas.getTexture("btn_up"),
-											"Restart",
-											Assets._btnTextureAtlas.getTexture("btn_down"));
-			boutonRestart.scaleWhenDown = 0.9;
-			boutonRestart.pivotX = boutonRestart.width * 0.5;
-			boutonRestart.pivotY = boutonRestart.height * 0.5;
-			boutonRestart.fontColor = 0xffffff;
-			boutonRestart.x = stage.stageWidth * 0.5;
-			boutonRestart.y = stage.stageHeight * 0.7;
-			boutonRestart.addEventListener(Event.TRIGGERED, onRestartTriggered);
-			addChild(boutonRestart);
+			stage.addEventListener(Event.ENTER_FRAME, boucleMort);
 			
 		}
 		
@@ -328,6 +314,59 @@ package states
 			Assets._SmokePartSystem.emitterY = Assets._StarsPartSystem.emitterY = doodleMovie.y;
 		}
 		
+		private function boucleMort (e:Event) : void
+		{
+				
+			for each (var stick:Stick in stageStickArr)
+			{
+				if (!stick.tooHigh)
+				{
+					stick.y -= 20;
+					if (stick.y < -stick.width)
+					{
+						stick.tooHigh = true;
+						cpt++;
+					}
+				}
+			}
+				
+			if (cpt >= stageStickArr.length)
+			{
+				scoreText.y = 400;
+				scoreText.text += " m";
+				scoreText.fontSize = 72;
+				scoreText.x = stage.stageWidth / 2 - scoreText.width / 2 + 5;
+				scoreText.width = scoreText.text.length * scoreText.fontSize;
+				gameOverTextfield.y = 125;
+				stage.removeEventListener(Event.ENTER_FRAME, boucleMort);
+				boutonMenu = new Button(Assets._btnTextureAtlas.getTexture("btn_up"),
+										"Menu",
+										Assets._btnTextureAtlas.getTexture("btn_down"));
+				boutonMenu.scaleWhenDown = 0.9;
+				boutonMenu.pivotX = boutonMenu.width * 0.5;
+				boutonMenu.pivotY = boutonMenu.height * 0.5;
+				boutonMenu.fontColor = 0x000000;
+				boutonMenu.fontSize = 30;
+				boutonMenu.x = stage.stageWidth * 0.5;
+				boutonMenu.y = stage.stageHeight * 0.6;
+				boutonMenu.addEventListener(Event.TRIGGERED, onMenuBtnTriggered);
+				addChild(boutonMenu);
+			
+				boutonRestart = new Button(Assets._btnTextureAtlas.getTexture("btn_up"),
+										"Restart",
+										Assets._btnTextureAtlas.getTexture("btn_down"));
+				boutonRestart.scaleWhenDown = 0.9;
+				boutonRestart.pivotX = boutonRestart.width * 0.5;
+				boutonRestart.pivotY = boutonRestart.height * 0.5;
+				boutonRestart.fontColor = 0x000000;
+				boutonRestart.fontSize = 30;
+				boutonRestart.x = stage.stageWidth * 0.5;
+				boutonRestart.y = stage.stageHeight * 0.7;
+				boutonRestart.addEventListener(Event.TRIGGERED, onRestartTriggered);
+				addChild(boutonRestart);
+			}
+		}
+		
 		private function refreashSticks () : void
 		{
 			while (bonusArr.length && bonusArr[0].y > stage.stageHeight * 1.1)
@@ -414,13 +453,13 @@ package states
 			var b:Bonus;
 			switch (kind) 
 			{
-				case 1:
+				case 1: // ressort
 					b = new Bonus("plat_norm"); //
 				break;
-				case 2:
+				case 2: // chaussure
 					b = new Bonus("plat_trap"); //
 				break;
-				case 3:
+				case 3: // jetpack
 					b = new Bonus("plat_norm"); //
 				break;
 			}

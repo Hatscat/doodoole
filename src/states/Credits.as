@@ -43,6 +43,7 @@ package states
 			boutonRetour.pivotX = boutonRetour.width;
 			boutonRetour.pivotY = 0;
 			boutonRetour.fontColor = 0x000000;
+			boutonRetour.fontSize = 30;
 			boutonRetour.x = stage.stageWidth/2 + 0.5*boutonRetour.width;
 			boutonRetour.y = 110;
 			boutonRetour.addEventListener(Event.TRIGGERED, onTriggered);

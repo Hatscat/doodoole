@@ -11,10 +11,11 @@ package classes
 	{
 		public static const STICK_WIDTH:int 	= 80;
 		static public const STICK_HEIGHT:int 	= 16;
+		public var tooHigh:Boolean = false;
 		
 		public function Stick (textureToGet:String) : void
 		{
-			super(Assets._plateformesTextureAtlas.getTextures(textureToGet), 10);
+			super(Assets._plateformesTextureAtlas.getTextures(textureToGet), 15);
 			
 			this.pivotX = this.width * 0.5;
 			this.pivotY = this.height * 0.5;

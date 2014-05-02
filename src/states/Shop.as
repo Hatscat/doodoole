@@ -47,6 +47,7 @@ package states
 			boutonRetour.pivotX = boutonRetour.width;
 			boutonRetour.pivotY = 0;
 			boutonRetour.fontColor = 0x000000;
+			boutonRetour.fontSize = 30;
 			boutonRetour.x = stage.stageWidth/2 + 0.5*boutonRetour.width;
 			boutonRetour.y = 110;
 			boutonRetour.addEventListener(Event.TRIGGERED, onTriggered);
@@ -57,6 +58,7 @@ package states
 										Assets._btnTextureAtlas.getTexture("btn_down"));
 			boutonSkin1.scaleWhenDown = 0.9;
 			boutonSkin1.fontColor = 0x000000;
+			boutonSkin1.fontSize = 30;
 			boutonSkin1.x = 50;
 			boutonSkin1.y = 500;
 			boutonSkin1.addEventListener(Event.TRIGGERED, onTriggered);
@@ -67,6 +69,7 @@ package states
 									Assets._btnTextureAtlas.getTexture("btn_down"));
 			boutonSkin2.scaleWhenDown = 0.9;
 			boutonSkin2.fontColor = 0x000000;
+			boutonSkin2.fontSize = 30;
 			boutonSkin2.x = 410;
 			boutonSkin2.y = 500;
 			boutonSkin2.addEventListener(Event.TRIGGERED, onTriggered);
