@@ -198,6 +198,8 @@ package states
 			{
 				doodleMovie.idle.visible = false;
 				doodleMovie.jetPack.visible = true;
+				doodleMovie.pivotX = doodleMovie.jetPack.pivotX;
+				doodleMovie.pivotY = doodleMovie.jetPack.pivotY;
 				yVelocity = -yVelocityMax_2;
 				launchPlayAnim();
 			}
@@ -216,6 +218,10 @@ package states
 			}
 			else
 			{
+				doodleMovie.idle.visible = true;
+				doodleMovie.jetPack.visible = false;
+				doodleMovie.pivotX = doodleMovie.idle.pivotX;
+				doodleMovie.pivotY = doodleMovie.idle.pivotY;
 				if (yVelocity > 0) // en chute == peut collisionner
 				{
 					var doodle_box:Rectangle = doodleMovie.idle.getBounds(this);
@@ -349,12 +355,19 @@ package states
 					}
 				}
 			}
+			
+			for each (var bonus:Bonus in bonusArr)
+			{
+				bonus.removeFromParent(true);
+				bonus = null;
+			}
 				
 			if (cpt >= stageStickArr.length)
 			{
 				scoreText.y = 400;
 				scoreText.text += " m";
 				scoreText.fontSize = 72;
+				scoreText.color = Color.RED;
 				scoreText.x = stage.stageWidth / 2 - scoreText.width / 2 + 5;
 				scoreText.width = scoreText.text.length * scoreText.fontSize;
 				gameOverTextfield.y = 125;
@@ -474,13 +487,13 @@ package states
 			switch (kind) 
 			{
 				case 1: // ressort
-					b = new Bonus("ressortItem"); 
+					b = new Bonus("trampolineItem"); 
 				break;
 				case 2: // chaussure
-					b = new Bonus("superManItem"); 
+					b = new Bonus("ressortItem"); 
 				break;
 				case 3: // jetpack
-					b = new Bonus("trampolineItem");
+					b = new Bonus("superManItem");
 				break;
 			}
 			b.kind = kind;
@@ -550,6 +563,10 @@ package states
 			boutonMenu = null;
 			boutonRestart.removeFromParent(true);
 			boutonRestart = null;
+			doodleMovie.idle.removeFromParent(true);
+			doodleMovie.idle = null;
+			doodleMovie.jetPack.removeFromParent(true);
+			doodleMovie.jetPack = null;
 			doodleMovie.removeFromParent(true);
 			doodleMovie = null;
 			
@@ -563,6 +580,8 @@ package states
 				stick.removeFromParent(true);
 				stick = null;
 			}
+
+
 			
 			removeFromParent(true);
 		}
