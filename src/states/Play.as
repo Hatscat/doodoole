@@ -48,7 +48,7 @@ package states
 		public static const shoesTimeBonus:int 		= 3333;
 		public static const GRAVITY:Number 			= 0.6;
 		public static const INERTIA:Number 			= 0.95;
-		public static const magicFind:Number 		= 666;
+		public static const magicFind:Number 		= 999;
 		public static const Score_w:int 			= 200;
 		public static const Score_h:int 			= 75;
 		public static const score2SpawnBigOnes:int 	= 90000;
@@ -340,7 +340,7 @@ package states
 				launchPlayAnim();
 				updatePlayAnim(-1);
 			}
-			else if (!jetpack_jump)
+			else if (!jetpack_jump && getTimer() > jetpackTimer)
 			{
 				/*doodleMovie.stop();*/
 				Assets._SmokePartSystem.stop();
@@ -418,6 +418,12 @@ package states
 				boutonRestart.y = stage.stageHeight * 0.7;
 				boutonRestart.addEventListener(Event.TRIGGERED, onRestartTriggered);
 				addChild(boutonRestart);
+				
+				doodleMovie.y = stage.stageHeight + doodleMovie.pivotY;
+				doodleMovie.idle.y = stage.stageHeight + doodleMovie.idle.pivotY;
+				doodleMovie.jetPack.y = stage.stageHeight + doodleMovie.jetPack.pivotY;
+				Assets._SmokePartSystem.emitterY = 9001; // IT'S OVER  9000 !!! 
+				Assets._StarsPartSystem.emitterY = 9001; // IT's OVER 9000 !!!
 			}
 		}
 		
