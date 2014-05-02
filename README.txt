@@ -18,6 +18,9 @@ et au bout de 5,6 utilisations du logicel changer deux params c'est pas super co
 
 attention danger, les menus peuvent heurter la sensibilté des graphistes/designer/toute personne avec un minimim de sens artistique mais c'est fait exprès.
 
+attention les objets sont vraiment petits (les assets fait à l'arrache par moi (Maxime) forcement...) il y a donc un logo super man pour le jetPack (le petit truc rouge), un ressort (le petit truc noir) et un trampoline (le petit truc noir et rouge qui resseble à une chaise pliante)
+
+
 GOD(E) MOD : on a bien reçu le méssage et comme on pense à toi on a mis un god mode pour pas que tu t'ènerve trop à tester les jeux (c'est gentil non ?)
 faut juste appuyer sur G in game (comme disent les anglais) et là c'est partit tu peux plus mourir et en plus t'a des JetPacks infini (J pour lancer le jetPack infini puis rapuyer sur J pour arréter)
 
