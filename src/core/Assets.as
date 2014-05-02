@@ -1,5 +1,6 @@
 package core
 {
+	import flash.media.Sound;
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 	import starling.extensions.PDParticleSystem;
@@ -56,7 +57,6 @@ package core
 		[Embed(source = "../../assets/textureetoile.png")]
 		private static const StarsPartTex:Class;
 		
-		
 		public static var _btnTextureAtlas:TextureAtlas;
 		public static var _plateformesTextureAtlas:TextureAtlas;
 		public static var _itemsTextureAtlas:TextureAtlas;
@@ -68,6 +68,28 @@ package core
 		public static var _nyanCatJetpackTextureAtlas:TextureAtlas;
 		public static var _SmokePartSystem:PDParticleSystem;
 		public static var _StarsPartSystem:PDParticleSystem;
+		
+		
+		[Embed(source="../../audio/nyanCat.mp3")]
+		private static const NyanCat:Class;
+		
+		[Embed(source="../../audio/aaarg.mp3")]
+		private static const Aaarg:Class;
+		
+		[Embed(source="../../audio/crack.mp3")]
+		private static const Crack:Class;
+		
+		[Embed(source="../../audio/spowing.mp3")]
+		private static const Spowing:Class;
+		
+		[Embed(source="../../audio/wouuiii.mp3")]
+		private static const Wouuiii:Class;
+		
+		public static var _nyanCat:Sound;
+		public static var _aaarg:Sound;
+		public static var _crack:Sound;
+		public static var _wouuiii:Sound;
+		public static var _spowing:Sound;
 		
 		public static function init():void
 		{
@@ -82,6 +104,12 @@ package core
 			_nyanCatJetpackTextureAtlas = new TextureAtlas(Texture.fromBitmap(new nyanCatJetpackSpriteSheet()), XML(new nyanCatJetpackSpriteSheetXML()));
 			_SmokePartSystem = new PDParticleSystem (XML(new SmokePartConfig()), Texture.fromBitmap(new SmokePartTex()));
 			_StarsPartSystem = new PDParticleSystem (XML(new StarsPartConfig()), Texture.fromBitmap(new StarsPartTex()));
+			
+			_nyanCat = new NyanCat();
+			_aaarg = new Aaarg();
+			_crack = new Crack();
+			_wouuiii = new Wouuiii();
+			_spowing = new Spowing();
 		}
 	}
 }

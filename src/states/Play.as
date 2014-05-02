@@ -2,6 +2,7 @@ package states
 {
 	import core.Assets;
 	import core.Game;
+	import flash.media.SoundChannel;
 	import interfaces.IState;
 	import flash.ui.Keyboard;
 	import flash.geom.Rectangle;
@@ -67,11 +68,12 @@ package states
 		private var lastFeetPosY:Number;
 		private var score:int;
 		private var i:int;
-		private var cpt:int = 0;
+		private var cpt:int;
 		private var midStageY:int;
 		private var scoreText:TextField;
 		private var gameOverTextfield:TextField;
 		private var playBackground:Image;
+		private var backgroundMusic:SoundChannel;
 		
 		private var bonusArr:Vector.<Bonus>;
 		private var normalStickArr:Vector.<NormalStick>;
@@ -79,6 +81,7 @@ package states
 		private var movingStickArr:Vector.<MovingStick>;
 		private var brokenStickArr:Vector.<BrokenStick>;
 		private var glassStickArr:Vector.<GlassStick>;
+		
 		
 		public function Play (pGame:Game) 
 		{
@@ -162,6 +165,15 @@ package states
 			stage.addChild(stageStickArr[0]);
 			stageStickArr[0].x = Math.random() * (stage.stageWidth - Stick.STICK_WIDTH) + Stick.STICK_WIDTH * 0.5;
 			stageStickArr[0].y = stage.stageHeight * 0.8;
+			
+			if (backgroundMusic)
+			{
+				backgroundMusic.stop();
+			}
+			else 
+			{
+				backgroundMusic = Assets._nyanCat.play(0, int.MAX_VALUE);
+			}
 		}
 		
 		private function startGame () : void
@@ -232,7 +244,7 @@ package states
 					
 						if (doodle_box.intersects(bonus_box) && lastFeetPosY < bonus.y) // loot !
 						{
-							trace("j'ai ramassé un item de type " + bonus.kind + " !!!");
+							//trace("j'ai ramassé un item de type " + bonus.kind + " !!!");
 							
 							switch (bonus.kind)
 							{
@@ -244,6 +256,7 @@ package states
 								break;
 								case 3 : // un jetpack
 									jetpackTimer = getTimer() + jetpackTimeBonus;
+									Assets._wouuiii.play();
 								break;
 							}
 							
@@ -263,10 +276,14 @@ package states
 						if (doodle_box.intersects(stick_box) && lastFeetPosY < stick.y - stick.pivotY) // collision
 						{
 							if (stick is BrokenStick)
+							{
 									BrokenStick(stick).drop();
+									Assets._crack.play();
+							}
 							else
 							{
 								yVelocity = can_big_jump ? -yVelocityMax_2 : -yVelocityMax;
+								Assets._spowing.play();
 								if (stick is GlassStick)
 									stick.y = stage.stageHeight * 1.1; // destruction
 								can_big_jump = false;
@@ -277,7 +294,10 @@ package states
 							if (I_AM_GOD || !score)
 								yVelocity = can_big_jump ? -yVelocityMax_2 : -yVelocityMax;
 							else  // death
+							{
+								Assets._aaarg.play();
 								gameOver();
+							}
 						}
 					}
 				}
@@ -334,6 +354,7 @@ package states
 			{
 				inputTimer = getTimer() + oneSecond;
 				jetpack_jump = !jetpack_jump;
+				if (jetpack_jump)	Assets._wouuiii.play();
 			}
 		
 			Assets._SmokePartSystem.emitterX = Assets._StarsPartSystem.emitterX = doodleMovie.x;
@@ -441,7 +462,7 @@ package states
 					bonusArr.push(bonus);
 					stage.addChild(bonus);
 					Starling.juggler.add(bonus);
-					trace("un bonus de type " + randBonus + " est arrivée!");
+					//trace("un bonus de type " + randBonus + " est arrivée!");
 				}
 				
 				var distance:Number = stageStickArr[stageStickArr.length - 2].y - stageStickArr[stageStickArr.length - 1].y;
