@@ -172,12 +172,18 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCat04.png</filename>
-            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCat05.png</filename>
-            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCat06.png</filename>
             <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCat01.png</filename>
             <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCat02.png</filename>
             <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCat03.png</filename>
+            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCat04.png</filename>
+            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCat05.png</filename>
+            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCat06.png</filename>
+            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatMod2_02.png</filename>
+            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatMod2_03.png</filename>
+            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatMod2_04.png</filename>
+            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatMod2_05.png</filename>
+            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatMod2_06.png</filename>
+            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatMod2_01.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

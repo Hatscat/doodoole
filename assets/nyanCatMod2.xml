@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:f16b16f5fbc469a751148dc079374f6b:38392e9a7871c97db3c12fe380ab125a:657f0b674ae14e6d463e78002daa0dc2$ -->
+<TextureAtlas imagePath="nyanCatMod2.png">
+    <SubTexture name="nyanCatMod2_01" x="2" y="2" width="140" height="84"/>
+    <SubTexture name="nyanCatMod2_02" x="144" y="2" width="140" height="84"/>
+    <SubTexture name="nyanCatMod2_03" x="286" y="2" width="140" height="84"/>
+    <SubTexture name="nyanCatMod2_04" x="2" y="88" width="140" height="84"/>
+    <SubTexture name="nyanCatMod2_05" x="144" y="88" width="140" height="84"/>
+    <SubTexture name="nyanCatMod2_06" x="286" y="88" width="140" height="84"/>
+</TextureAtlas>

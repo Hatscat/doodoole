@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:db55f6db919f6e7a19c3d7a6dd920c38:56252387c6f3f113a08861118c16ddcc:d3602717688ed1d28169612a76b42c23$ -->
+<!-- $TexturePacker:SmartUpdate:f32e90431581115f8c479345c1d03d00:5c208e9bd0b4bfde945012919bc11cb5:d3602717688ed1d28169612a76b42c23$ -->
 <TextureAtlas imagePath="nyanCat.png">
-    <SubTexture name="nyanCat01" x="2" y="2" width="57" height="38"/>
-    <SubTexture name="nyanCat02" x="61" y="2" width="57" height="38"/>
-    <SubTexture name="nyanCat03" x="2" y="42" width="57" height="38"/>
-    <SubTexture name="nyanCat04" x="61" y="42" width="57" height="38"/>
-    <SubTexture name="nyanCat05" x="2" y="82" width="57" height="38"/>
-    <SubTexture name="nyanCat06" x="61" y="82" width="57" height="38"/>
+    <SubTexture name="nyanCat01" x="2" y="2" width="140" height="84"/>
+    <SubTexture name="nyanCat02" x="144" y="2" width="140" height="84"/>
+    <SubTexture name="nyanCat03" x="286" y="2" width="140" height="84"/>
+    <SubTexture name="nyanCat04" x="286" y="2" width="140" height="84"/>
+    <SubTexture name="nyanCat05" x="2" y="88" width="140" height="84"/>
+    <SubTexture name="nyanCat06" x="286" y="2" width="140" height="84"/>
+    <SubTexture name="nyanCatMod2_01" x="144" y="88" width="140" height="84"/>
+    <SubTexture name="nyanCatMod2_02" x="286" y="88" width="140" height="84"/>
+    <SubTexture name="nyanCatMod2_03" x="2" y="174" width="140" height="84"/>
+    <SubTexture name="nyanCatMod2_04" x="144" y="174" width="140" height="84"/>
+    <SubTexture name="nyanCatMod2_05" x="286" y="174" width="140" height="84"/>
+    <SubTexture name="nyanCatMod2_06" x="2" y="260" width="140" height="84"/>
 </TextureAtlas>

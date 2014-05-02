@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.3.2</string>
         <key>fileName</key>
-        <string>C:/Users/M.LORE/Documents/GitHub/doodoole/fihciersCréa/jetPack.tps</string>
+        <string>C:/Users/M.LORE/Documents/GitHub/doodoole/fihciersCréa/jetPackMod2.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>sparrow</string>
         <key>textureFileName</key>
-        <filename>../assets/nyanCatJetpack.png</filename>
+        <filename>../assets/nyanCatMod2.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -131,7 +131,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../assets/nyanCatJetpack.xml</filename>
+                <filename>../assets/nyanCatMod2.xml</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -172,16 +172,12 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatJetpack01.png</filename>
-            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatJetpack02.png</filename>
-            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatJetpack03.png</filename>
-            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatJetpack04.png</filename>
-            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatJetpack05.png</filename>
-            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatJetpackMod2_01.png</filename>
-            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatJetpackMod2_02.png</filename>
-            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatJetpackMod2_03.png</filename>
-            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatJetpackMod2_04.png</filename>
-            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatJetpackMod2_05.png</filename>
+            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatMod2_04.png</filename>
+            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatMod2_05.png</filename>
+            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatMod2_06.png</filename>
+            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatMod2_01.png</filename>
+            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatMod2_02.png</filename>
+            <filename>../../../../Desktop/COURS II/As3DoodleJumpMaxPatheticAttempt/assets/nyanCatMod2_03.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
