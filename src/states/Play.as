@@ -41,13 +41,13 @@ package states
 		private var touchesObj:Object = new Object();
 		
 		public static const xVelocityMax:int 		= 1;
-		public static const yVelocityMax:int 		= 21;
+		public static const yVelocityMax:int 		= 20;
 		public static const yVelocityMax_2:int 		= 50;
-		public static const jetpackTimeBonus:int 	= 3000;
-		public static const shoesTimeBonus:int 		= 4000;
+		public static const jetpackTimeBonus:int 	= 3333;
+		public static const shoesTimeBonus:int 		= 3333;
 		public static const GRAVITY:Number 			= 0.6;
 		public static const INERTIA:Number 			= 0.95;
-		public static const magicFind:Number 		= 5000;
+		public static const magicFind:Number 		= 666;
 		public static const Score_w:int 			= 200;
 		public static const Score_h:int 			= 75;
 		public static const score2SpawnBigOnes:int 	= 90000;
@@ -187,15 +187,10 @@ package states
 			deltaTime = (getTimer() - oldTime) * 0.06 || 1; // scalé sur 60fps
 			oldTime = getTimer();
 			
-			if (jetpack_jump)
+			if (jetpack_jump || getTimer() < jetpackTimer)
 			{
 				yVelocity = -yVelocityMax_2;
 				launchPlayAnim();
-			}
-			
-			if (getTimer() < shoesTimer)
-			{
-				can_big_jump = true;
 			}
 			
 			if (doodleMovie.y <= midStageY && yVelocity < 0)
@@ -203,6 +198,8 @@ package states
 				doodleMovie.y = midStageY;
 				for each (var stick:Stick in stageStickArr)
 					stick.y -= yVelocity;
+				for each (var bonus:Bonus in bonusArr)
+					bonus.y -= yVelocity;
 				score -= yVelocity;
 				scoreText.text = String(score);
 			}
@@ -211,6 +208,36 @@ package states
 				if (yVelocity > 0) // en chute == peut collisionner
 				{
 					var doodle_box:Rectangle = doodleMovie.getBounds(this);
+					
+					for each (var bonus:Bonus in bonusArr)
+					{
+						var bonus_box:Rectangle = bonus.getBounds(this);
+					
+						if (doodle_box.intersects(bonus_box) && lastFeetPosY < bonus.y) // loot !
+						{
+							trace("j'ai ramassé un item de type " + bonus.kind + " !!!");
+							
+							switch (bonus.kind)
+							{
+								case 1 : // un ressort
+									can_big_jump = true;
+								break;
+								case 2 : // des chaussures
+									shoesTimer = getTimer() + shoesTimeBonus;
+								break;
+								case 3 : // un jetpack
+									jetpackTimer = getTimer() + jetpackTimeBonus;
+								break;
+							}
+							
+							bonus.y = stage.stageHeight * 1.1; // destruction
+						}
+					}
+					
+					if (getTimer() < shoesTimer)
+					{
+						can_big_jump = true;
+					}
 					
 					for each (stick in stageStickArr)
 					{
@@ -234,28 +261,6 @@ package states
 								yVelocity = can_big_jump ? -yVelocityMax_2 : -yVelocityMax;
 							else  // death
 								gameOver();
-						}
-					}
-					for each (var bonus:Bonus in bonusArr)
-					{
-						var bonus_box:Rectangle = bonus.getBounds(this);
-					
-						if (doodle_box.intersects(bonus_box) && lastFeetPosY < bonus.y) // loot !
-						{
-							trace("j'ai ramassé un item de type " + bonus.kind + " !!!");
-							
-							switch (bonus.kind)
-							{
-								case 1 : // un ressort
-									can_big_jump = true;
-								break;
-								case 2 : // des chaussures
-									shoesTimer = getTimer() + shoesTimeBonus;
-								break;
-								case 3 : // un jetpack
-									jetpackTimer = getTimer() + jetpackTimeBonus;
-								break;
-							}
 						}
 					}
 				}
@@ -321,7 +326,7 @@ package states
 			{
 				if (!stick.tooHigh)
 				{
-					stick.y -= 20*deltaTime;
+					stick.y -= 20 * deltaTime;
 					if (stick.y < -stick.width)
 					{
 						stick.tooHigh = true;
@@ -400,7 +405,7 @@ package states
 				stage.addChild(stick);
 				
 				var randBonus:int = Math.min(3, Math.random() * Math.random() * Math.random() * (score / magicFind) | 0);
-				if (randBonus)
+				if (randBonus && !(stick is MovingStick))
 				{
 					var bonus:Bonus = getNewBonus(randBonus);
 					bonus.x = stick.x;
